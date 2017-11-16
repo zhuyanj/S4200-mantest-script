@@ -1,0 +1,66 @@
+format failed on first test               {T452}
+ethernet ports test                       {T453}
+Higig ports loop test                     {T454}
+PCI config register read/write test       {T455}
+S-Channel register read/write test        {T456}
+SOC register read/write test              {T457}
+Higig ports interconnect test             {T458}
+MOTFCC test                               {T459}
+RTL8139D ports test                       {T460}
+I2C0 test                                 {T461}
+I2C1 test                                 {T462}
+DS1820 test                               {T463}
+RTC test                                  {T464}
+backboard type check                      {T465}
+Slot/Chassis CPLD test                    {T466}
+power CPLD test                           {T467}
+fan CPLD test                             {T468}
+card on slot CPLD test                    {T469}
+backboard Reset/Insert test               {T470}
+ethernet port led on/off test             {T471}
+RUN led test                              {T472}
+M/S led test                              {T473}
+SWAP key test                             {T474}
+onboard Reset key test                    {T475}
+backboard RST-IN1 key test                {T476}
+backboard RST-IN2 key test                {T477}
+user software write test                  {T478}
+timeout                                   {T479}
+SN not match on final test                {T480}
+RAM Check                                 {T481}
+MAC not match on final test               {T482}
+Hardware Version not match on final test  {T483}
+Board Type not match on final test        {T484}
+backboard power tunnel test               {T485}
+backboard fan tunnel test                 {T486}
+backboard I2C tunnel(to linecard) test    {T487}
+backboard Chassis type test               {T488}
+backboard Slot id test                    {T489}
+backboard linecard index test             {T490}
+backboard power index test                {T491}
+backboard fan index test                  {T492}
+backboard reset signal tunnel test        {T493}
+backboard manage tunnel test              {T494}
+dual BOOTROM test                         {T495}
+CF test on mainboard                      {T496}
+CPLD device interface test                {T497}
+I2C interface(controlling fan) test       {T498}
+manage tunnel test                        {T499}
+NVRAM test on mainboard                   {T500}
+load port test                            {T501}
+SPI tunnel(about ATMEL MCU) test          {T502}
+I2C tunnel(about ATMEL MCU) test          {T503}
+handshake signal(about ATMEL MCU) test    {T504}
+FLASH test                                {T505}
+FAN led test                              {T506}
+CF led test                               {T507}
+all led test(green, red and off)          {T508}
+I2C to AD8158 test                        {T509}
+RTC not match when F/T check!             {T510}
+Fan controller test	            	  {T511}
+SFP information test             	  {T512}
+Fastlink test            		  {T513}
+XFP Module test        			  {T514}
+SFP tx enable test            		  {T515}
+PHY Unicode test                          {T516}
+Power Control Chip test                   {T517} 

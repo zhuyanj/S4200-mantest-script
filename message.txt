@@ -1,0 +1,482 @@
+#软件版本
+TEST_VERSION::7.0.10
+
+#通用button提示
+confirm_but_text::Confirm
+cancel_but_text::Cancel
+exit_but_text::Exit
+close_but_text::Close
+ok_but_text::OK
+error_but_text::ERROR
+retest_but_text::Next DUT
+continue_but_text::Continue
+checklog_but_text::Check log
+fail_but_text::FAILED
+autotest_text::AutoTest Result
+
+#Serial_config.tcl
+
+Serial_config_msg1::Please input connection name
+Serial_config_msg2::Space character is not allowed in the connection name
+
+
+#产测程序.tcl
+init_title::SCC RouterSwitch Manufactory Test Platform
+appHelpAbout_msg1::SCC RouterSwitch Manufactory Test Platform
+appHelpAbout_msg2::         Version 
+
+#Test_funcs.tcl
+
+#check_atemlicense
+Invalid_atemsn_msg:: Invalid atem sn!
+Invalid_atemlicense_msg:: Invalid atem license!
+check_atemlicense_msg:: check license error!
+
+#check_item_test
+ups_test_error_msg:: ups test error!
+memsize_test_error_msg:: memsize test error!
+flash_test_error_msg:: flash test error!
+nandflash_test_error_msg:: nandflash test error!
+usb_test_error_msg:: usb test error!
+rtc_test_error_msg:: rtc test error!
+temp_test_error_msg:: temp test error!
+memory_test_error_msg:: memory test error!
+smi_test_error_msg:: smi test error!
+port_test_error_msg:: port test error!
+sfpinfo_test_error_msg:: sfpinfo test error!
+fastlink_test_error_msg:: fastlink test error!
+poeon_test_error_msg:: poeon test error!
+poeon_test_error_msg1:: poeon 1to12 test error!
+poeon_test_error_msg2:: poeon 12to23 test error!
+poeoff_test_error_msg:: poeoff test error!
+manage_port_test_error_msg:: manage port error!
+
+#check_send_log
+check_sendlog_msg:: send log failed!
+
+#set_mac
+set_mac_dlg_title::  Input MAC Address
+set_mac_dlg_text1::  Input a mac address begin with 6063FD!
+set_mac_dlg_text2::  Input a mac address begin with 0012CF!
+set_mac_dlg_text3::  Input a mac address!
+set_mac_msg::Select Producer
+
+#check_mac
+check_mac_msg::Invalid mac address!
+
+#set_sn
+set_sn_dlg_title::Input SN
+set_sn_dlg_text::  Input a alphanumeric serial number!
+
+#check_sn
+check_sn_msg::Invalid serial number!
+
+#check_sn_retest
+check_sn_retest_msg::SN not match the Producer!
+check_sn_retest_msg::Invalid serial number!
+
+#set_pn
+set_pn_dlg_title::Input PN
+set_pn_dlg_text::  Input a alphanumeric serial number!
+
+#check_pn
+check_pn_msg::Invalid serial number!
+
+#check_pn_retest
+check_pn_retest_msg::PN not match the Producer!
+check_pn_retest_msg::Invalid serial number!
+
+#set_license
+set_license_dlg_title::Input LICENSE
+set_license_dlg_text::  Input a alphanumeric serial number!
+
+#check_license
+check_license_msg::Invalid serial number!
+
+#check_license_retest
+check_license_retest_msg::LICENSE not match the Producer!
+check_license_retest_msg::Invalid serial number!
+
+#show_test_info_dlg
+show_test_info_dlg_title::Test Information 
+show_test_info_dlg_config_lab1::MAC Address:
+show_test_info_dlg_config_lab2::SN:
+show_test_info_dlg_config_lab3::Test Type:
+show_test_info_dlg_config_lab4::Hardware version:
+show_test_info_dlg_config_lab5::CPLD Version:
+show_test_info_dlg_config_lab6::Board Type:
+show_test_info_dlg_process_frame::Test Process
+show_test_info_dlg_result_frame::Test Result
+show_test_info_dlg_result_lab1::Items tested:
+show_test_info_dlg_result_lab2::Items passed:
+show_test_info_dlg_result_lab3::Items failed:
+
+#start_main_board_test
+start_main_board_test_searchdlg_title::searching response file...
+start_main_board_test_searchdlg_text::  Waiting for test server's response!
+
+start_main_board_test_msg1::  Insert Mastercard（M12GB）into slot 1 and linecards into other slots!
+start_main_board_test_msg2::  Insert Mastercard（MII）into slot 1 and linecards into other slots!
+start_main_board_test_msg3::  Insert Mastercard（MI）into M 1 and linecards into other slots!
+start_main_board_test_testdlg_title::Waiting power on...
+start_main_board_test_testdlg_lab1::  Power on the DUT!
+
+#wait_mem_check 
+wait_mem_check_ok_log::Testing RAM OK!
+wait_mem_check_fail_log::Testing RAM FAILED!
+
+#wait_ucode_download
+wait_ucode_download_timeout_log::Downloading ucode TIMEOUT!
+
+#wait_watchdog_reboot
+wait_watchdog_reboot_ok_log::watchdog feedoff autoreboot OK!
+wait_watchdog_reboot_fail_log::watchdog feedoff autoreboot FAILED!
+
+#wait_mantest
+wait_mantest_msg::Can't start P/T test, please stop agingtest first!
+wait_mantest_log::Starting Manufactory Program FAILED!
+
+#wait_nos
+wait_nos_log::Starting nos Program FAILED!
+
+#wait_boot
+wait_boot_log1::Formating Flash FAILED!
+wait_boot_log2::Starting bootrom FAILED!
+
+#test_end
+test_end_log1::RSTIN2 in backborad FAILED!
+test_end_log2::RSTIN1 in backborad FAILED!
+test_end_msg1::Please pull out all twisted-pair/fiber, connect twisted-pair to PC!
+test_end_lab1::Rebooting, please wait......
+
+#get_result
+get_result_text1::    Testing END!
+
+#set_boot_variable
+set_boot_variable_msg1::set card watt FAILED!
+set_boot_variable_msg2::set card flag FAILED!
+
+#check_cable
+check_cable_msg::  Connect the twisted-pair to PC!
+
+#send_run_testimg
+send_run_testimg_msg::  Please connect the twisted-pair to PC!
+
+#wait_run
+wait_run_log1::Formating Flash FAILED!
+wait_run_log2::Load VxWorks_Release OK!
+wait_run_msg::Please pull out twisted pair connected to PC, connect twisted pair cables and fibers to the port!
+
+#test_hw
+test_hw_msg1::Can't start F/T test, aging time is not enough!
+test_hw_msg2::Can't start F/T test, aging test error!
+test_hw_msg3::Can't start F/T test, the times(power on/off the DUT) is not enough!
+
+#search_response_file
+search_response_file_msg1::Test server refused 
+search_response_file_msg2::Wrong response from test server.
+search_response_file_msg3::Test server does not response.
+
+
+#Term_handle.tcl
+
+#reader
+reader_type_msg::Wrong Board Type
+reader_sn_msg::Wrong SN
+reader_pn_msg::Wrong PN
+reader_hw_msg::Wrong Hardware Version
+reader_mac_msg::Wrong MAC
+reader_vlanmac_msg::Wrong VLAN MAC
+reader_cpumac_msg::Wrong CPU MAC
+reader_rtc_msg::Wrong RTC Time!
+reader_mamagemac_msg::Wrong MANAGE MAC
+
+#testFailed
+testFailed_title::Autotest Result...
+testFailed_text::  Autotest Error!
+
+#bpTypeErrorExitDlg
+bpTypeErrorExitDlg_title::BoardType set ERROR
+bpTypeErrorExitDlg_lab::  BoardType not match ChassisType!
+
+#linkcheck
+linkcheck_title::Please check the port connection!
+linkcheck_lab::  Please check the port connection!
+
+
+#bpFirstTestPassed
+bpFirstTestPassed_text::  Slot 1 autotest PASSED!
+
+#bpFirstTestFailed
+bpFirstTestFailed_text::  Slot 1 autotest FAILED!
+
+#powerTest
+powerTest_title::  Test xxx power is OK or not...
+powerTest_text1::  Make sure xxx power is on!
+powerTest_text2::  Insert xxx power!
+
+#bpSecondTest
+bpSecondTest_title::Please change the slot of MasterCard!
+bpSecondTest_text1::  Pull out mastercard（M12GB）form slot 1, insert it into slot 2!
+bpSecondTest_text2::  Pull out mastercard（MII）form slot 1, insert it into slot 2!
+bpSecondTest_text3::  Pull out mastercard（MI）form M 1, insert it into M 2!
+
+#bpSecondTestPassed
+bpSecondTestPassed_text::  Slot 2 autotest PASSED!
+
+#bpSecondTestFailed
+bpSecondTestFailed_text::  Slot 2 autotest FAILED!
+
+#readLog
+readLog_title::ERROR log...
+
+#ledAllRedTest
+ledAllRedTest_dlg_title::Test lighting all the LEDs to RED...
+ledAllRedTest_dlg_lab::  All LEDs are RED?
+
+#sendPowerTest
+sendPowerTest_log::Absence of xxx power!
+sendPowerTest_errlog::The status of xxx power is ERROR!
+sendPowerTest_oklog::xxx power test OK!
+
+#ledAllRedTestPassed
+ledAllRedTestPassed_lab::Lighting all the LEDs to RED OK!
+
+#ledAllRedTestNotPassed
+ledAllRedTestNotPassed_lab::Lighting all the LEDs to RED ERROR!
+
+#ledAllGreenTest
+ledAllGreenTest_title::Test lighting all the LEDs to GREEN...
+ledAllGreenTest_lab::  All LEDs are GREEN?
+
+#ledAllGreenTestPassed
+ledAllGreenTestPassed_lab::Lighting all the LEDs to GREEN OK!
+
+#ledAllGreenTestNotPassed
+ledAllGreenTestNotPassed_lab::Lighting all the LEDs to GREEN FAILED!
+
+#ledAllORANGETest
+ledAllORANGETest_title::Test lighting all the LEDs to ORANGE...
+ledAllORANGETest_lab::  All LEDs are ORANGE?
+
+#ledAllORANGETestPassed
+ledAllORANGETestPassed_lab::Lighting all the LEDs to ORANGE OK!
+
+#ledAllORANGETestNotPassed
+ledAllORANGETestNotPassed_lab::Lighting all the LEDs to ORANGE FAILED!
+
+#ledAllOffTest
+ledAllOffTest_title::Test turnning off all the LEDs...
+ledAllOffTest_lab::  All LEDs are OFF?
+
+#ledAllOffTestPassed
+ledAllOffTestPassed_lab::Turn off all the LEDs OK!
+
+#ledAllOffTestNotPassed
+ledAllOffTestNotPassed_lab::Turn off all the LEDs FAILED!
+
+#ledFanIndexTest
+ledFanIndexTest_title::Test turnning on the OK LED of FAN status...
+ledFanIndexTest_lab::  The OK LED of FAN status in MaterCard is ON ?
+
+#ledFanIndexTestPassed
+ledFanIndexTestPassed_lab::Turn on the OK LED of FAN status in MasterCard OK!
+
+#ledFanIndexTestNotPassed
+ledFanIndexTestNotPassed_lab::Turn on the OK LED of FAN status in MasterCard FAILED!
+
+#ledFanNoIndexTest
+ledFanNoIndexTest_title::Test turnning on the FAIL LED of FAN status...
+ledFanNoIndexTest_lab::  The FAIL LED of FAN status in MaterCard is ON?
+
+#ledFanNoIndexTestPassed
+ledFanNoIndexTestPassed_lab::Turn on the FAIL LED of FAN status in MasterCard OK!
+
+#ledFanNoIndexTestNotPassed
+ledFanNoIndexTestNotPassed_lab::Turn on the FAIL LED of FAN status in MasterCard FAILED!
+
+#ledRunFastFlashTest
+ledRunFastFlashTest_title::Test lighting the RUN LED to fast blink...
+ledRunFastFlashTest_lab::  The RUN LED of MasterCard is fast blink?
+
+#ledRunFastFlashTestPassed
+ledRunFastFlashTestPassed_lab::Lighting the RUN LED of MasterCard to fast blink OK!
+
+#ledRunFastFlashTestNotPassed
+ledRunFastFlashTestNotPassed_lab::Lighting the RUN LED of MasterCard to fast blink FAILED!
+
+#ledRunSlowFlashTest
+ledRunSlowFlashTest_title::Test lighting the RUN LED of MasterCard to slow blink...
+ledRunSlowFlashTest_lab::  The RUN LED of MasterCard is slow blink?
+
+#ledRunSlowFlashTestPassed
+ledRunSlowFlashTestPassed_lab::Lighting the RUN LED of MasterCard to slow blink OK!
+
+#ledRunSlowFlashTestNotPassed
+ledRunSlowFlashTestNotPassed_lab::Lighting the RUN LED of MasterCard to slow blink FAILED!
+
+#ledCFIndexTest
+ledCFIndexTest_title::Test turnning on the LED of CF card...
+ledCFIndexTest_lab::  Insert CF card, check whether the LED of CF card is on?
+
+#ledCFIndexTestPassed
+ledCFIndexTestPassed_lab::Turn on the LED of CF card OK!
+
+#ledCFIndexTestNotPassed
+ledCFIndexTestNotPassed_lab::Turn on the LED of CF card FAILED!
+
+#ledCFNoIndexTest
+ledCFNoIndexTest_title::Test turnning off the LED of CF card...
+ledCFNoIndexTest_lab::  Pull out the CF card, then check whether the LED of CF card is off?
+
+#ledCFNoIndexTestPassed
+ledCFNoIndexTestPassed_lab::Turn off the LED of CF card OK!
+
+#ledCFNoIndexTestNotPassed
+ledCFNoIndexTestNotPassed_lab::Turn off the LED of CF card FAILED!
+
+#ledPortOnTest
+ledPortOnTest_pair_msg::Pull out twisted pair cables and fibers from all ports!
+ledPortOnTest_title::Test lighting on the LED...
+ledPortOnTest_linecard_lab::  All LEDs of LineCard is on?
+ledPortOnTest_switch_lab::  All LEDs of Switch is on?
+
+#ledPortOnTestPassed
+ledPortOnTestPassed_lab::Lighting on all the Link/Active LEDs OK!
+
+#ledPortOnTestNotPassed
+ledPortOnTestNotPassed_lab::Lighting on all the Link/Active LEDs FAILED!
+
+#ledPortOffTest
+ledPortOffTest_title::Test lighting off the LED...
+ledPortOffTest_linecard_lab::  All LEDs of LineCard is off?
+ledPortOffTest_switch::  All LEDs of LineCard is off?
+
+#ledPortOffTestPassed
+ledPortOffTestPassed_lab::Lighting off all the Link/Active LEDs OK!
+
+#ledPortOffTestNotPassed
+ledPortOffTestNotPassed_lab::Lighting off all the Link/Active LEDs FAILED!
+
+#ledRunRedTest
+ledRunRedTest_title::Testing the RED LEDs...
+ledRunRedTest_lab1::  The RUN LED is RED?
+ledRunRedTest_lab2::  the RUN LED is RED blinking?
+
+#ledRunRedTestPassed
+ledRunRedTestPassed_lab1::Lighting on the RUN LED to RED OK!
+ledRunRedTestPassed_lab2::Lighting on the RUN LED to RED blinking OK!
+
+#ledRunRedTestNotPassed
+ledRunRedTestNotPassed_lab1::Lighting on the RUN LED to RED FAILED!
+ledRunRedTestNotPassed_lab2::Lighting on the RUN LED to RED blinking FAILED!
+
+#ledRunGreenTest
+ledRunGreenTest_title::Testing the GREEN LEDs...
+ledRunGreenTest_lab::  The RUN LED is GREEN?
+
+#ledRunGreenTestPassed
+ledRunGreenTestPassed_lab::Lighting on the RUN LED to GREEN OK!
+
+#ledRunGreenTestNotPassed
+ledRunGreenTestNotPassed_lab::Lighting on the RUN LED to GREEN FAILED!
+
+#ledRunGFTest
+ledRunGFTest_title1::Testing the GREEN LEDs...
+ledRunGFTest_title2::Testing the GREEN LEDs BLINKING...
+ledRunGFTest_lab1::  The RUN LED is GREEN?
+ledRunGFTest_lab2::  The RUN LED is GREEN blinking?
+
+#ledRunGFTestPassed
+ledRunGFTestPassed_lab1::Lighting on the RUN LED to GREEN OK!
+ledRunGFTestPassed_lab2::Lighting on the RUN LED to GREEN blinking OK!
+
+#ledRunGFTestNotPassed
+ledRunGFTestNotPassed_lab1::Lighting on the RUN LED to GREEN FAILED!
+ledRunGFTestNotPassed_lab2::Lighting on the RUN LED to GREEN blinking FAILED!
+
+#ledRunGSTest
+ledRunGSTest_title::Testing the GREEN LEDs slow blinking...
+ledRunGSTest_lab::  The RUN LED is GREEN slow blinking?
+
+#ledRunGSTestPassed
+ledRunGSTestPassed_lab::Lighting on the RUN LED to GREEN slow blinking OK!
+
+#ledRunGSTestNotPassed
+ledRunGSTestNotPassed_lab::Lighting on the RUN LED to GREEN slow blinking FAILED!
+
+#ledRunOrangeOnTest
+ledRunOrangeOnTest_title::Testing the ORANGE LEDs...
+ledRunOrangeOnTest_lab1::  The RUN LED is ORANGE?
+ledRunOrangeOnTest_lab2::  The RUN LED is ORANGE blinking?
+
+#ledRunOrangeOnTestPassed
+ledRunOrangeOnTestPassed_lab::Lighting on the RUN LED to ORANGE blinking OK!
+
+#ledRunOrangeOnTestNotPassed
+ledRunOrangeOnTestNotPassed_lab::Lighting on the RUN LED to ORANGE blinking FAILED!
+
+#ledRunOffTest
+ledRunOffTest_title::Turn off RUN LED...
+ledRunOffTest_lab::  The RUN LED is OFF?
+
+#ledRunOffTestPassed
+ledRunOffTestPassed_lab::Turn off the RUN LED OK!
+
+#ledRunOffTestNotPassed
+ledRunOffTestNotPassed_lab::Turn off the RUN LED FAILED!
+
+#ledMSOnTest
+ledMSOnTest_title::Turn on M/S LED...
+ledMSOnTest_lab::  The M/S LED is on?
+
+#ledMSOnTestPassed
+ledMSOnTestPassed_lab::Lighting on the M/S LED OK!
+
+#ledMSOnTestNotPassed
+ledMSOnTestNotPassed_lab::Lighting on the M/S LED FAILED!
+
+#ledMSOffTest
+ledMSOffTest_title::Turn off M/S LED...
+ledMSOffTest_lab::  The M/S LED is off?
+
+#ledMSOffTestPassed
+ledMSOffTestPassed_lab::Lighting off the M/S LED OK!
+
+#ledMSOffTestNotPassed
+ledMSOffTestNotPassed_lab::Lighting off the M/S LED FAILED!
+
+#keySwapTest
+keySwapTest_title::Testing Swap...
+keySwapTest_lab::  Press Swap, watch the screen information!
+
+#sCardResetTest
+sCardResetTest_log1::SWAP OK!
+sCardResetTest_log2::SWAP FAILED!
+sCardResetTest_title::Testing Reset in SwitchCard...
+sCardResetTest_lab::  Press Reset in SwitchCard!
+
+#startSCardReset
+startSCardReset_lab::Reset in SwitchCard OK!
+
+#mCardReset1Test
+mCardReset1Test_log::Reset in SwitchCard FAILED!
+mCardReset1Test_title::Testing RSTIN1 in backborad...
+mCardReset1Test_lab::  Press RSTIN1(SW1) in backboard!
+
+#startMCardReset1
+startMCardReset1_log::RSTIN1 in backboard OK!
+
+#mCardReset2Test
+mCardReset2Test_log::RSTIN1 in backboard FAILED!
+mCardReset2Test_title::Testing RSTIN2 in backboard...
+mCardReset2Test_lab::  Press RSTIN2(SW2) in backboard!
+
+#startMCardReset2
+startMCardReset2_log::RSTIN2 in backboard OK!
+
+#wait_showboard
+wait_showboard_faillog::Showboard check FAILED!
+
+#wait_aging
+wait_aging_errlog::Aging test FAILED!
