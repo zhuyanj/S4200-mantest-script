@@ -335,7 +335,10 @@ proc moni::init_test_mode_info {} {
 proc moni::sendlogfile {} {
 	
 	#给一定时间缓冲串口log，再发送日志
-
+	if { $::moni::M(BoardType) == "S4200-28P-SI" \
+		|| $::moni::M(BoardType) == "S4200-28P-P-SI" } {
+		return
+	}
 	::moni::wait 5000
 
 	::moni::get_time
@@ -1397,99 +1400,103 @@ proc moni::start_main_board_test {} {
         if {$::moni::M(TestType) == "F/T" } {
                 ::moni::wait 1000
                 set name $::moni::Cfg(name)
+			if { $::moni::M(BoardType) != "S4200-28P-SI" \
+				&& $::moni::M(BoardType) != "S4200-28P-P-SI" } {
+				::moni::send $::moni::Cfg(name) "showatemsn\r"
+				if { [::moni::wait_string {atem sn:}] == 0 } {
+					tk_messageBox -message "$moni::MSG(Invalid_atemsn_msg)" -icon error
+					return;
+				}
 
-		::moni::send $::moni::Cfg(name) "showatemsn\r"
-		if { [::moni::wait_string {atem sn:}] == 0 } {
-			tk_messageBox -message "$moni::MSG(Invalid_atemsn_msg)" -icon error
-			return;
-		}
+				set showatem [string first "showatemsn" $::moni::M(RecvBufAll.$name) 100]
+				set index [string first "atem sn:" $::moni::M(RecvBufAll.$name) $showatem]
+				set enter [string first "\x0A" $::moni::M(RecvBufAll.$name) $index]
+				set atemsn [string range $::moni::M(RecvBufAll.$name) [expr {$index + 8}] [expr {$enter - 1}] ]
 
-		set showatem [string first "showatemsn" $::moni::M(RecvBufAll.$name) 100]
-		set index [string first "atem sn:" $::moni::M(RecvBufAll.$name) $showatem]
-		set enter [string first "\x0A" $::moni::M(RecvBufAll.$name) $index]
-		set atemsn [string range $::moni::M(RecvBufAll.$name) [expr {$index + 8}] [expr {$enter - 1}] ]
-
-		set ::moni::M(ATEMSN) $atemsn
+				set ::moni::M(ATEMSN) $atemsn
+			}
 				    
-                ::moni::send $::moni::Cfg(name) "show board\r"
-		::moni::wait 500
+			::moni::send $::moni::Cfg(name) "show board\r"
+			::moni::wait 500
 
-                ::moni::send $::moni::Cfg(name) "reboot\r"
+			::moni::send $::moni::Cfg(name) "reboot\r"
 
-                set ::moni::M(StartWaitRam) 1
-                set ::moni::M(ExitWaitRam) 0
-                set ::moni::M(GetRam) 0
+			set ::moni::M(StartWaitRam) 1
+			set ::moni::M(ExitWaitRam) 0
+			set ::moni::M(GetRam) 0
 
-		::moni::wait 20000   ;#需要等待串口发送完数据
-                ::moni::reinit       ;#2222222222222222
+			::moni::wait 20000   ;#需要等待串口发送完数据
+			::moni::reinit       ;#2222222222222222
 
-                ::moni::wait_ram
+			::moni::wait_ram
 
-                if {$::moni::M(GetRam) == 1} {
-                  set ::moni::M(GetRam) 0
+			if {$::moni::M(GetRam) == 1} {
+			  set ::moni::M(GetRam) 0
 
-                  ::moni::send $::moni::Cfg(name) "\x14"  ;#Ctrl+T 进入img产测命令行 modified by duzqa131028
-                  ::moni::wait 3000
-                  ::moni::send $::moni::Cfg(name) "\x14"
-                  ::moni::wait 3000
-                  ::moni::send $::moni::Cfg(name) "\x14"
-                  ::moni::wait 3000
-                  ::moni::send $::moni::Cfg(name) "\x14"
-                } else {
-                    return
-                }
-                ::moni::wait 3000
-				
-		set ::moni::M(GetMantest) 0
-
-		::moni::term_clear
-		::moni::wait 3000
-		
-		::moni::wait_mantest
-
-		if {$::moni::M(GetMantest) == 1} {
-			set ::moni::M(GetMantest) 0
-			
-			#::moni::send $::moni::Cfg(name) "$::moni::M(USER)\r"
-			#::moni::send $::moni::Cfg(name) "\x0A"
-			#::moni::send $::moni::Cfg(name) $::moni::M(PASSWORD)
-			::moni::send $::moni::Cfg(name) "\n"
-			::moni::wait 1000
-			set conname $::moni::Cfg(name)
-			#set promptsChk [string first $::moni::M(PROMPTS) $::moni::M(RecvBufAll.$conname)]
-			#if { $promptsChk >= 0 } {
-			#	::moni::wait 100
-			#} else {
-			#	return
-			#}					
-			::moni::send $name "en\n"
-			::moni::wait 2000
-			::moni::send $::moni::Cfg(name) "terminal length 0"
-			::moni::send $::moni::Cfg(name) "\n"
-			::moni::wait 3000
-			::moni::send $name "mantest portled normal\n"
-			::moni::wait 100
-			::moni::send $name "mantest log show\n"
-			::moni::wait 2000
-
-			::moni::check_AgingResult				;#检查老化测试是否OK,OK后才能进行复测
-			if {$::moni::M(GetAgingResult) == 1} {
-				set ::moni::M(GetAgingResult) 0
-				if {[::moni::wait_RepeatTest] == 1	} {
-					::moni::send $name "en\n"
-					
-					::moni::wait_PortLedTest
-					#::moni::test_end
-				}						
-
+			  ::moni::send $::moni::Cfg(name) "\x14"  ;#Ctrl+T 进入img产测命令行 modified by duzqa131028
+			  ::moni::wait 3000
+			  ::moni::send $::moni::Cfg(name) "\x14"
+			  ::moni::wait 3000
+			  ::moni::send $::moni::Cfg(name) "\x14"
+			  ::moni::wait 3000
+			  ::moni::send $::moni::Cfg(name) "\x14"
 			} else {
-				::moni::saveerrlog "Aging TEST ERROR"
-				::moni::addtesterr
-				::moni::get_result
 				return
 			}
+			::moni::wait 3000
+				
+			set ::moni::M(GetMantest) 0
 
-		}									
+			::moni::term_clear
+			::moni::wait 3000
+			
+			::moni::wait_mantest
+
+			if {$::moni::M(GetMantest) == 1} {
+				set ::moni::M(GetMantest) 0
+				
+				#::moni::send $::moni::Cfg(name) "$::moni::M(USER)\r"
+				#::moni::send $::moni::Cfg(name) "\x0A"
+				#::moni::send $::moni::Cfg(name) $::moni::M(PASSWORD)
+				::moni::send $::moni::Cfg(name) "\n"
+				::moni::wait 1000
+				set conname $::moni::Cfg(name)
+				#set promptsChk [string first $::moni::M(PROMPTS) $::moni::M(RecvBufAll.$conname)]
+				#if { $promptsChk >= 0 } {
+				#	::moni::wait 100
+				#} else {
+				#	return
+				#}	
+				::moni::update_nosimg
+				return
+				::moni::send $name "en\n"
+				::moni::wait 2000
+				::moni::send $::moni::Cfg(name) "terminal length 0"
+				::moni::send $::moni::Cfg(name) "\n"
+				::moni::wait 3000
+				::moni::send $name "mantest portled normal\n"
+				::moni::wait 100
+				::moni::send $name "mantest log show\n"
+				::moni::wait 2000
+
+				::moni::check_AgingResult				;#检查老化测试是否OK,OK后才能进行复测
+				if {$::moni::M(GetAgingResult) == 1} {
+					set ::moni::M(GetAgingResult) 0
+					if {[::moni::wait_RepeatTest] == 1	} {
+						::moni::send $name "en\n"
+						
+						::moni::wait_PortLedTest
+						#::moni::test_end
+					}						
+
+				} else {
+					::moni::saveerrlog "Aging TEST ERROR"
+					::moni::addtesterr
+					::moni::get_result
+					return
+				}
+
+			}									
         } elseif {$::moni::M(TestType) == "P/T" } {
 
 		::moni::send $::moni::Cfg(name) "clear boardinfo\r"
@@ -2391,6 +2398,48 @@ proc moni::get_result {} {
     set ::moni::M(GetResult) 1
 }
 
+proc moni::delete_mantestimg_and_log {} {
+	::moni::send $::moni::Cfg(name) "en\n"
+	#::moni::wait 2000
+	#::moni::send $::moni::Cfg(name) "boot img flash:/nos.img primary\n"
+	::moni::wait 2000
+	::moni::send $::moni::Cfg(name) "delete mantest.log\r"
+	::moni::wait 500
+	::moni::send $::moni::Cfg(name) "y\r"
+	::moni::wait 5000
+	::moni::send $::moni::Cfg(name) "delete mantest.img\r"
+	::moni::wait 500
+	::moni::send $::moni::Cfg(name) "y\r"
+}
+
+proc moni::update_nosimg {} {
+	set ans [tk_messageBox -message "请将升级线连接到端口1，确认端口up后开始升级img" -type okcancel -icon info]
+	switch -- $ans {
+		ok {
+			::moni::send $::moni::Cfg(name) "en\n"
+			::moni::wait 500
+			::moni::send $::moni::Cfg(name) "config\n"
+			::moni::wait 500
+			::moni::send $::moni::Cfg(name) "vlan 100\n"
+			::moni::wait 500
+			::moni::send $::moni::Cfg(name) "switchport interface ethernet 1/0/1\n"
+			::moni::wait 500
+			::moni::send $::moni::Cfg(name) "interface vlan 100\n"
+			::moni::wait 500
+			::moni::send $::moni::Cfg(name) "ip address 1.1.1.122 255.255.255.0\n"
+			::moni::wait 1000
+			::moni::send $::moni::Cfg(name) "end\n"
+			::moni::wait 300000
+			::moni::send $::moni::Cfg(name) "copy tftp://1.1.1.1/DCN-S4200-10.17.0-vendor_7.0.3.5(R0241.0198)_nos.img nos.img\n"
+		}
+		cancel {
+			set ::moni::M(ErrorFound) 1
+			::moni::get_result
+		}
+	}
+
+}
+
 proc moni::next_test {} {
     catch {destroy .testEndDlg}
     catch {destroy .testFailedDlg}
@@ -2751,8 +2800,11 @@ proc moni::send_mac {} {
 		::moni::send $::moni::Cfg(name) "$macplusplus\r"
 		::moni::wait 2000
 	}
-
-	::moni::send_atemlicense $macraw
+	
+	if { $::moni::M(BoardType) != "S4200-28P-SI" \
+		&& $::moni::M(BoardType) != "S4200-28P-P-SI" } {
+		::moni::send_atemlicense $macraw
+	}
 }
 
 proc moni::send_sn {} {
@@ -3711,7 +3763,8 @@ proc moni::wait_PortLedLightOff {} {
 					|| $::moni::M(BoardType) == "CS6200-28X-P-EI" \
 					|| $::moni::M(BoardType) == "CS6200-28X-EI"  } {
 			::moni::wait_FanTest
-			} elseif { $::moni::M(BoardType) == "S4600-28P-P-SI" } {
+			} elseif { $::moni::M(BoardType) == "S4600-28P-P-SI" \
+						|| $::moni::M(BoardType) == "S4200-28P-P-SI" } {
 			::moni::wait_FanCtrlTest
 			} else {
 			::moni::wait_ResetButtonTest
@@ -3763,14 +3816,22 @@ proc moni::wait_FanTest {} {
 proc moni::wait_ResetButtonTest {} {
 
 	if {$::moni::M(TestType) == "F/T"} {
+		if { $::moni::M(BoardType) == "S4200-28P-SI" \
+			|| $::moni::M(BoardType) == "S4200-28P-P-SI" } {
+			::moni::delete_mantestimg_and_log
+			::moni::update_nosimg
+		}
+			
 		::moni::send $::moni::Cfg(name) "en\n"
 		::moni::wait 2000
-		::moni::send $::moni::Cfg(name) "boot img flash:/nos.img primary\n"
+		# ::moni::send $::moni::Cfg(name) "boot img flash:/nos.img primary\n"
 	}
 
 	if { $::moni::M(BoardType) == "SNR-S2985G-24T-UPS" \
 		|| $::moni::M(BoardType) == "SNR-S2965-24T" \
-		|| $::moni::M(BoardType) == "SNR-S2985G-8T-POE" } {
+		|| $::moni::M(BoardType) == "SNR-S2985G-8T-POE" \
+		|| $::moni::M(BoardType) == "S4200-28P-SI" \
+		|| $::moni::M(BoardType) == "S4200-28P-P-SI" } {
 		
 		if {$::moni::M(TestType) == "P/T"} {
 			::moni::send $::moni::Cfg(name) "mantest aging start\n"
@@ -4111,7 +4172,9 @@ proc moni::wait_FirstTest {} {
 		|| $::moni::M(BoardType) == "S4600-28P-SI" \
 		|| $::moni::M(BoardType) == "SNR-S2985G-24T-UPS" \
 		|| $::moni::M(BoardType) == "S4600-28C-SI" \
-		|| $::moni::M(BoardType) == "SNR-S2985G-8T-POE" } {
+		|| $::moni::M(BoardType) == "SNR-S2985G-8T-POE" \
+		|| $::moni::M(BoardType) == "S4200-28P-SI" \
+		|| $::moni::M(BoardType) == "S4200-28P-P-SI" } {
 		#::moni::reinit 
 		::moni::wait 3000
 		::moni::send $name "\x0A"
@@ -4148,7 +4211,8 @@ proc moni::wait_FirstTest {} {
 		}
 	}
 
-	if { $::moni::M(BoardType) == "S4600-28P-P-SI" } {
+	if { $::moni::M(BoardType) == "S4600-28P-P-SI" \
+			|| $::moni::M(BoardType) == "S4200-28P-P-SI" } {
 		tk_messageBox -message "POE测试，请确保电口1-12和PD设备一一对接后点击确定!"
 		#::moni::reinit 
 		::moni::wait 3000

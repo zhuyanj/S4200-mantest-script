@@ -264,6 +264,10 @@ proc moni::get_boardtypenum {} {
         set ::moni::M(BoardTypeNum) 373
     } elseif {$::moni::M(BoardType) == "SNR-S2985G-8T-POE"} {
         set ::moni::M(BoardTypeNum) 373
+    } elseif {$::moni::M(BoardType) == "S4200-28P-SI"} {
+        set ::moni::M(BoardTypeNum) 378
+    } elseif {$::moni::M(BoardType) == "S4200-28P-P-SI"} {
+        set ::moni::M(BoardTypeNum) 379
     }
 
 }
