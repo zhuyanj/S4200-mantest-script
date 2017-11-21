@@ -1080,8 +1080,14 @@ proc moni::check_pn {} {
         return
     }
 	
-    ::moni::start_main_board_test	
-	#::moni::set_license					;基于V9版本修改去掉set_license
+	if { 0 == [::moni::atem_license_is_support] } {
+		if {$::moni::M(TestType) == "P/T" } {
+			::moni::set_license
+			return
+		}
+	}
+
+	::moni::start_main_board_test
 }
 
 proc moni::check_pn_retest {} {
@@ -1400,8 +1406,7 @@ proc moni::start_main_board_test {} {
         if {$::moni::M(TestType) == "F/T" } {
                 ::moni::wait 1000
                 set name $::moni::Cfg(name)
-			if { $::moni::M(BoardType) != "S4200-28P-SI" \
-				&& $::moni::M(BoardType) != "S4200-28P-P-SI" } {
+			if { 1 == [::moni::atem_license_is_support] } {
 				::moni::send $::moni::Cfg(name) "showatemsn\r"
 				if { [::moni::wait_string {atem sn:}] == 0 } {
 					tk_messageBox -message "$moni::MSG(Invalid_atemsn_msg)" -icon error
@@ -1467,8 +1472,9 @@ proc moni::start_main_board_test {} {
 				#} else {
 				#	return
 				#}	
-				::moni::update_nosimg
-				return
+				# ::moni::delete_mantestimg_and_log
+				# ::moni::update_nosimg
+				# return
 				::moni::send $name "en\n"
 				::moni::wait 2000
 				::moni::send $::moni::Cfg(name) "terminal length 0"
@@ -1526,10 +1532,13 @@ proc moni::start_main_board_test {} {
 		::moni::wait 500				
 		::moni::send $::moni::Cfg(name) "$::moni::M(PN)\r"
 		
-		#::moni::wait 500									;基于v9版本修改去掉设置license
-		#::moni::send $::moni::Cfg(name) "setlicense sw\r"
-		#::moni::wait 500				
-		#::moni::send $::moni::Cfg(name) "$::moni::M(LICENSE)\r"
+		if {1 != [::moni::atem_license_is_support] } {
+			::moni::wait 500									
+			::moni::send $::moni::Cfg(name) "setlicense sw\r"
+			::moni::wait 500				
+			::moni::send $::moni::Cfg(name) "$::moni::M(LICENSE)\r"
+		}
+
 		if { $::moni::M(BoardType) == "S5750E-52X-SI" \
 			|| $::moni::M(BoardType) == "CS6200-52X-EI" \
 			|| $::moni::M(BoardType) == "S5750E-28X-P-SI" \
@@ -2309,26 +2318,28 @@ proc moni::get_result {} {
     if {$::moni::M(ErrorFound) == 0} {
 
         #/*Begin:当测试复测测试全部成功后，删除mantest.img以及老化日志,bug[45928]*/
-        if {$::moni::M(TestType) == "F/T"} {	
-			::moni::send $::moni::Cfg(name) "en\n"
-			#::moni::wait 2000
-			#::moni::send $::moni::Cfg(name) "boot img flash:/nos.img primary\n"
-			::moni::wait 2000
-			::moni::send $::moni::Cfg(name) "delete mantest.log\r"
-			::moni::wait 500
-			::moni::send $::moni::Cfg(name) "y\r"
-			::moni::wait 5000
-			::moni::send $::moni::Cfg(name) "delete mantest.img\r"
-			::moni::wait 500
-			::moni::send $::moni::Cfg(name) "y\r"
-			#::moni::wait 5000				
-			#::moni::send $::moni::Cfg(name) "reload\r"
-			#::moni::wait 3000
-			#::moni::send $::moni::Cfg(name) "y\r"
-			#::moni::wait 3000
-            #/*End:当测试复测测试全部成功后，删除mantest.img以及老化日志,bug[45928]*/
-        } 
-        
+		if { $::moni::M(BoardType) != "S4200-28P-SI" \
+			&& $::moni::M(BoardType) != "S4200-28P-P-SI" } {
+			if {$::moni::M(TestType) == "F/T"} {	
+				::moni::send $::moni::Cfg(name) "en\n"
+				#::moni::wait 2000
+				#::moni::send $::moni::Cfg(name) "boot img flash:/nos.img primary\n"
+				::moni::wait 2000
+				::moni::send $::moni::Cfg(name) "delete mantest.log\r"
+				::moni::wait 500
+				::moni::send $::moni::Cfg(name) "y\r"
+				::moni::wait 5000
+				::moni::send $::moni::Cfg(name) "delete mantest.img\r"
+				::moni::wait 500
+				::moni::send $::moni::Cfg(name) "y\r"
+				#::moni::wait 5000				
+				#::moni::send $::moni::Cfg(name) "reload\r"
+				#::moni::wait 3000
+				#::moni::send $::moni::Cfg(name) "y\r"
+				#::moni::wait 3000
+				#/*End:当测试复测测试全部成功后，删除mantest.img以及老化日志,bug[45928]*/
+			}
+		} 
     }
 
     moni::sendlogfile
@@ -2402,18 +2413,18 @@ proc moni::delete_mantestimg_and_log {} {
 	::moni::send $::moni::Cfg(name) "en\n"
 	#::moni::wait 2000
 	#::moni::send $::moni::Cfg(name) "boot img flash:/nos.img primary\n"
-	::moni::wait 2000
 	::moni::send $::moni::Cfg(name) "delete mantest.log\r"
 	::moni::wait 500
 	::moni::send $::moni::Cfg(name) "y\r"
-	::moni::wait 5000
+	::moni::wait 500
 	::moni::send $::moni::Cfg(name) "delete mantest.img\r"
 	::moni::wait 500
 	::moni::send $::moni::Cfg(name) "y\r"
+	::moni::wait 1000
 }
 
 proc moni::update_nosimg {} {
-	set ans [tk_messageBox -message "请将升级线连接到端口1，确认端口up后开始升级img" -type okcancel -icon info]
+	set ans [tk_messageBox -message "请将升级网线连接到端口1，确认端口up后开始升级img" -type okcancel -icon info]
 	switch -- $ans {
 		ok {
 			::moni::send $::moni::Cfg(name) "en\n"
@@ -2422,15 +2433,26 @@ proc moni::update_nosimg {} {
 			::moni::wait 500
 			::moni::send $::moni::Cfg(name) "vlan 100\n"
 			::moni::wait 500
-			::moni::send $::moni::Cfg(name) "switchport interface ethernet 1/0/1\n"
+			::moni::send $::moni::Cfg(name) "interface ethernet 1/0/1\n"
+			::moni::wait 500
+			::moni::send $::moni::Cfg(name) "switchport mode access\n"
+			::moni::wait 500
+			::moni::send $::moni::Cfg(name) "switchport access vlan 100\n"
 			::moni::wait 500
 			::moni::send $::moni::Cfg(name) "interface vlan 100\n"
 			::moni::wait 500
 			::moni::send $::moni::Cfg(name) "ip address 1.1.1.122 255.255.255.0\n"
-			::moni::wait 1000
+			::moni::wait 500
 			::moni::send $::moni::Cfg(name) "end\n"
-			::moni::wait 300000
-			::moni::send $::moni::Cfg(name) "copy tftp://1.1.1.1/DCN-S4200-10.17.0-vendor_7.0.3.5(R0241.0198)_nos.img nos.img\n"
+			::moni::wait 2000
+			::moni::send $::moni::Cfg(name) "\ncopy tftp://1.1.1.1/DCN-S4200-10.17.0-vendor_7.0.3.5(R0241.0198)_nos.img nos.img\n"
+			# ::moni::wait 300000
+			catch { .testInfoDlg.labf2.t fastinsert end "\nUpdate nos.img start!!\n" }
+			# ::moni::wait_result_string "Write ok." "Update nos.img Failed!!" 30
+			if {1 == [ ::moni::wait_result_string "Write ok." "Update nos.img Failed!!" 360 ] } {
+				catch { .testInfoDlg.labf2.t fastinsert end "\nUpdate img OK!!\n" }
+			}
+			# catch { .testInfoDlg.labf2.t yview 10000 }       ;#ctext显示到10000行
 		}
 		cancel {
 			set ::moni::M(ErrorFound) 1
@@ -2438,6 +2460,47 @@ proc moni::update_nosimg {} {
 		}
 	}
 
+}
+
+proc moni::wait_result_string { result err_msg timeout} {
+	variable M
+	set i 0
+	set waitTime 1000
+	set name $::moni::Cfg(name)
+	# ::moni::wait $waitTime
+
+	while {1} {
+		::moni::wait $waitTime
+		set vStringChk [string first $result $::moni::M(RecvBufAll.$name)]
+		if { $vStringChk >= 0 } {
+			return 1
+		}
+
+		if {$i == $timeout * 1000/$waitTime} {
+			set ::moni::M(ErrorFound) 1
+			# set ::moni::M(HandleString) 0
+			::moni::send $::moni::Cfg(name) "\x0A"
+			moni::saveerrlog "$err_msg"
+			moni::savelog "$err_msg"
+			moni::addtesterr
+			catch { .testInfoDlg.labf2.t fastinsert end "\n$err_msg\n" }
+			catch { .testInfoDlg.labf2.t yview 10000 }       ;#ctext显示到10000行
+			# set ::moni::M(HandleString) 0
+
+			moni::get_result
+			return 0
+		}
+		incr i
+	}
+}
+
+proc moni::atem_license_is_support {} {
+	if { $::moni::M(BoardType) == "S4200-28P-SI" \
+		|| $::moni::M(BoardType) == "S4200-28P-P-SI" } {
+		return 0
+	} else {
+		return 1
+	}
 }
 
 proc moni::next_test {} {
@@ -3702,8 +3765,10 @@ proc moni::wait_PortLedLightOn {} {
 	::moni::wait 1000
 	::moni::send $::moni::Cfg(name) "mantest portled on\n"
 	::moni::wait 1000
-	::moni::send $::moni::Cfg(name) "mantest diagled on\n"
-	::moni::wait 1000
+	if { $::moni::M(BoardType) != "S4200-28P-P-SI" } {
+		::moni::send $::moni::Cfg(name) "mantest diagled on\n"
+		::moni::wait 1000
+	}
 	if { $::moni::M(BoardType) == "S5750E-52X-SI" \
 			|| $::moni::M(BoardType) == "CS6200-52X-EI" \
 			|| $::moni::M(BoardType) == "S5750E-28X-SI" \
@@ -3713,13 +3778,30 @@ proc moni::wait_PortLedLightOn {} {
 			|| $::moni::M(BoardType) == "CS6200-28X-EI"  } {
 
 		set ans [tk_messageBox -message "请检查所有的LED灯是否全亮(不用检查网管口灯)，若是请点击”确认“接着测试，若不是请取消重新断电测试！" -type okcancel -icon info]
+	} elseif { $::moni::M(BoardType) == "S4200-28P-P-SI" } {
+		set ans [tk_messageBox -message "请检查所有的Link/Act和POWER的LED灯是否全亮绿灯，若是请点击”确认“接着测试，若不是请取消重新断电测试！" -type okcancel -icon info]
 	} else {
 
 		set ans [tk_messageBox -message "请检查所有的LED灯是否全亮，若是请点击”确认“接着测试，若不是请取消重新断电测试！" -type okcancel -icon info]
 
 	}
 	switch -- $ans {
-		ok ::moni::wait_PortLedLightOff
+		ok {
+			if { $::moni::M(BoardType) == "S4200-28P-P-SI" } {
+				::moni::send $::moni::Cfg(name) "mantest portled yellowon\n"
+				::moni::wait 1000
+				set ans [tk_messageBox -message "请检查所有的LED灯是否全亮黄灯(不用检查POWER灯)，若是请点击”确认“接着测试，若不是请取消重新断电测试！" -type okcancel -icon info]
+				switch -- $ans {		
+					ok ::moni::wait_PortLedLightOff
+					cancel {
+						set ::moni::M(ErrorFound) 1
+						::moni::get_result
+					}				
+				}
+			} else {
+				::moni::wait_PortLedLightOff
+			}
+		}
 		cancel {
 			set ::moni::M(ErrorFound) 1
 			::moni::get_result
@@ -3731,8 +3813,10 @@ proc moni::wait_PortLedLightOff {} {
 	::moni::wait 1000
 	::moni::send $::moni::Cfg(name) "mantest portled off\n"
 	::moni::wait 1000
-	::moni::send $::moni::Cfg(name) "mantest diagled off\n"
-	::moni::wait 1000	
+	if { $::moni::M(BoardType) != "S4200-28P-P-SI" } {
+		::moni::send $::moni::Cfg(name) "mantest diagled off\n"
+		::moni::wait 1000	
+	}
 	if { $::moni::M(BoardType) == "SNR-S2985G-24T-UPS" \
 		|| $::moni::M(BoardType) == "SNR-S2965-24T" } {
 
@@ -3762,10 +3846,10 @@ proc moni::wait_PortLedLightOff {} {
 					|| $::moni::M(BoardType) == "S5750E-28C-SI" \
 					|| $::moni::M(BoardType) == "CS6200-28X-P-EI" \
 					|| $::moni::M(BoardType) == "CS6200-28X-EI"  } {
-			::moni::wait_FanTest
+			::moni::wait_FanCtrlTest
 			} elseif { $::moni::M(BoardType) == "S4600-28P-P-SI" \
 						|| $::moni::M(BoardType) == "S4200-28P-P-SI" } {
-			::moni::wait_FanCtrlTest
+			::moni::wait_FanTest
 			} else {
 			::moni::wait_ResetButtonTest
 			}
@@ -3818,13 +3902,15 @@ proc moni::wait_ResetButtonTest {} {
 	if {$::moni::M(TestType) == "F/T"} {
 		if { $::moni::M(BoardType) == "S4200-28P-SI" \
 			|| $::moni::M(BoardType) == "S4200-28P-P-SI" } {
+			::moni::send $::moni::Cfg(name) "mantest portled normal\n"
+			::moni::wait 1000
 			::moni::delete_mantestimg_and_log
 			::moni::update_nosimg
 		}
 			
 		::moni::send $::moni::Cfg(name) "en\n"
 		::moni::wait 2000
-		# ::moni::send $::moni::Cfg(name) "boot img flash:/nos.img primary\n"
+		 ::moni::send $::moni::Cfg(name) "boot img flash:/nos.img primary\n"
 	}
 
 	if { $::moni::M(BoardType) == "SNR-S2985G-24T-UPS" \
@@ -3835,8 +3921,9 @@ proc moni::wait_ResetButtonTest {} {
 		
 		if {$::moni::M(TestType) == "P/T"} {
 			::moni::send $::moni::Cfg(name) "mantest aging start\n"
-			::moni::wait 2000
+			::moni::wait_result_string "Aging test" "mantest aging start FAILED!!" 60
 			::moni::send $::moni::Cfg(name) "mantest aging timeset $::moni::M(AgingTime)\n"
+			::moni::wait_result_string "Aging test" "mantest aging timeset FAILED!!" 10
 
 			::moni::test_end
 
@@ -3868,6 +3955,10 @@ proc moni::wait_ResetButtonTest {} {
 		} else {
 			::moni::wait_nosimg
 		}
+		
+		if {$::moni::M(ErrorFound) == 1} {
+            return
+        }
 	}
 
 	if {$::moni::M(GetMantest) == 1} {
@@ -3876,8 +3967,9 @@ proc moni::wait_ResetButtonTest {} {
 
 		if {$::moni::M(TestType) == "P/T"} {
 			::moni::send $::moni::Cfg(name) "mantest aging start\n"
-			::moni::wait 2000
+			::moni::wait_result_string "Aging test" "mantest aging start FAILED!!" 60
 			::moni::send $::moni::Cfg(name) "mantest aging timeset $::moni::M(AgingTime)\n"
+			::moni::wait_result_string "Aging test" "mantest aging timeset FAILED!!" 10
 		} else {
 			if { $::moni::M(BoardType) == "S5750E-52X-SI" \
 				|| $::moni::M(BoardType) == "CS6200-52X-EI" \
