@@ -335,8 +335,7 @@ proc moni::init_test_mode_info {} {
 proc moni::sendlogfile {} {
 	
 	#给一定时间缓冲串口log，再发送日志
-	if { $::moni::M(BoardType) == "S4200-28P-SI" \
-		|| $::moni::M(BoardType) == "S4200-28P-P-SI" } {
+	if { 1 != [::moni::atem_license_is_support] } {
 		return
 	}
 	::moni::wait 5000
@@ -2864,8 +2863,7 @@ proc moni::send_mac {} {
 		::moni::wait 2000
 	}
 	
-	if { $::moni::M(BoardType) != "S4200-28P-SI" \
-		&& $::moni::M(BoardType) != "S4200-28P-P-SI" } {
+	if { 1 == [::moni::atem_license_is_support] } {
 		::moni::send_atemlicense $macraw
 	}
 }
