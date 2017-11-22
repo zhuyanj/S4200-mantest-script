@@ -2029,14 +2029,14 @@ proc moni::wait_nosimg {} {
         ::moni::fastinsertend "test" "."
         ::moni::wait 1000
 
-	set vlicenseChk [string first {(license)>} $::moni::M(RecvBufAll.$name)]
+        set vlicenseChk [string first {(license)>} $::moni::M(RecvBufAll.$name)]
 
-	if { $vlicenseChk >= 0 } {
-		tk_messageBox -message "$moni::MSG(check_atemlicense_msg)"
-		set ::moni::M(ErrorFound) 1
-		::moni::get_result
-		break;
-	}
+        if { $vlicenseChk >= 0 } {
+                tk_messageBox -message "$moni::MSG(check_atemlicense_msg)"
+                set ::moni::M(ErrorFound) 1
+                ::moni::get_result
+                break;
+        }
         set vMantestModChk [string first $switchname $::moni::M(RecvBufAll.$name)]
         #set vNosModChk [string first {S4600} $::moni::M(RecvBufAll.$name)]
       
